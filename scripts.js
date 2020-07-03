@@ -120,6 +120,21 @@ function upload(){
                 .then(result => {
                     face_id = result.id
                     get_url += face_id
+                    setInterval(get, delay);
+                    function get(){
+                        fetch(get_url)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status == 'SUCCESS'){
+                                face_url = image_url + data.url
+                                draw_face(face_url)
+                                return true
+                            }
+                            else{
+                                return false
+                            }
+                        })
+                    }
                     for (var i = 0; i < 15; i++){
                         if (get()){
                             break
@@ -149,18 +164,3 @@ async function img_converter(file) {
 }
 
 
-setInterval(get, delay);
-function get(){
-    fetch(get_url)
-    .then(response => response.json())
-    .then(data => {
-        if (data.status == 'SUCCESS'){
-            face_url = image_url + data.url
-            draw_face(face_url)
-            return true
-        }
-        else{
-            return false
-        }
-    })
-}
